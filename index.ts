@@ -1,2 +1,30 @@
+import express from 'express';
+import bodyParser from 'body-parser';
+import { nanoid } from 'nanoid';
 
-console.log(1234);
+const app = express();
+
+let list: any[] = [];
+
+app.use(bodyParser.json());
+app.post('/api/student/add', (req, res) => {
+  const uid = nanoid();
+  list.push({ ...req.body, uid });
+  res.json({ success: true, object: uid });
+});
+app.post('/api/student/delete', (req, res) => {
+  const uid = req.body.uid;
+  list = list.filter((item) => item.uid !== uid);
+  res.json({ success: true });
+});
+app.post('/api/student/update', (req, res) => {
+  const uid = req.body.uid;
+  const index = list.findIndex((item) => item.uid === uid);
+  if (index >= 0) list[index] = { ...req.body, uid };
+  res.json({ success: true });
+});
+app.get('/api/student/page', (req, res) => {
+  res.json({ success: true, object: list });
+});
+
+app.listen(8888);
