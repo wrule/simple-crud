@@ -24,7 +24,16 @@ app.post('/api/student/update', (req, res) => {
   res.json({ success: true });
 });
 app.get('/api/student/page', (req, res) => {
-  res.json({ success: true, object: list });
+  const pageNum = Number(req.query.pageNum) || 1;
+  const pageSize = Number(req.query.pageSize) || 10;
+  const page = list.slice((pageNum - 1) * pageSize, pageNum * pageSize);
+  res.json({ success: true, object: {
+    pageNum, pageSize, page, total: list.length,
+  } });
+});
+app.all('*', (req, res) => {
+  res.statusCode = 404;
+  res.send('404');
 });
 
 const PORT = 8888;
