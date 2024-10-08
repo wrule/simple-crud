@@ -27,4 +27,6 @@ app.get('/api/student/page', (req, res) => {
   res.json({ success: true, object: list });
 });
 
-app.listen(8888);
+const PORT = 8888;
+app.listen(PORT);
+console.log(`server works on ${PORT} port...`);
